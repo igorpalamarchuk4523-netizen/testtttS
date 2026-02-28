@@ -1269,8 +1269,8 @@ function Airflow:NewInput(frame : Frame , Callback : () -> ()) : TextButton
 end;
 
 function Airflow:Hover(element : Frame)
-	local Original = Color3.fromRGB(26, 26, 38);
-	local Hover = Color3.fromRGB(40, 40, 58);
+	local Original = Color3.fromRGB(91, 91, 91);
+	local Hover = Color3.fromRGB(144, 144, 144);
 
 	element.MouseEnter:Connect(function()
 		Airflow:CreateAnimation(element,0.35,nil,{
@@ -1421,7 +1421,7 @@ do
 	Copy.Name = Airflow:RandomString()
 	Copy.Parent = ColorPicker
 	Copy.AnchorPoint = Vector2.new(0, 1)
-	Copy.BackgroundColor3 = Color3.fromRGB(26, 26, 38)
+	Copy.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
 	Copy.BackgroundTransparency = 0.800
 	Copy.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	Copy.BorderSizePixel = 0
@@ -1453,7 +1453,7 @@ do
 	Paste.Name = Airflow:RandomString()
 	Paste.Parent = ColorPicker
 	Paste.AnchorPoint = Vector2.new(1, 1)
-	Paste.BackgroundColor3 = Color3.fromRGB(26, 26, 38)
+	Paste.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
 	Paste.BackgroundTransparency = 0.800
 	Paste.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	Paste.BorderSizePixel = 0
@@ -1875,7 +1875,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 
 		ButtonFrame.Name = Airflow:RandomString()
 		ButtonFrame.Parent = element
-		ButtonFrame.BackgroundColor3 = Color3.fromRGB(26, 26, 38)
+		ButtonFrame.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
 		ButtonFrame.BackgroundTransparency = 1
 		ButtonFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		ButtonFrame.BorderSizePixel = 0
@@ -1912,7 +1912,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 			})
 
 			task.delay(0.4,Airflow.CreateAnimation,Airflow,ButtonFrame,0.5,nil,{
-				BackgroundTransparency = 0.0,
+				BackgroundTransparency = 0.800,
 				Size = UDim2.new(1, -2, 0, 34)
 			});
 		end;
@@ -1922,7 +1922,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 				task.wait(delayTick);
 
 				Airflow:CreateAnimation(ButtonFrame,0.7,nil,{
-					BackgroundTransparency = 0.0,
+					BackgroundTransparency = 0.800,
 					Size = UDim2.new(1, -2, 0, 34)
 				})
 
@@ -1984,7 +1984,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 
 		ToggleFrame.Name = Airflow:RandomString()
 		ToggleFrame.Parent = element
-		ToggleFrame.BackgroundColor3 = Color3.fromRGB(26, 26, 38)
+		ToggleFrame.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
 		ToggleFrame.BackgroundTransparency = 1
 		ToggleFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		ToggleFrame.BorderSizePixel = 0
@@ -2047,13 +2047,13 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 				BackgroundTransparency = 0
 			})
 			task.delay(0.5,Airflow.CreateAnimation,Airflow,block,0.5,nil,{
-				BackgroundTransparency = 0.0
+				BackgroundTransparency = 0.5
 			})
 			task.delay(0.5,Airflow.CreateAnimation,Airflow,PText,0.5,nil,{
 				TextTransparency = 0.3
 			})
 			task.delay(0.4,Airflow.CreateAnimation,Airflow,ToggleFrame,0.5,nil,{
-				BackgroundTransparency = 0.0,
+				BackgroundTransparency = 0.800,
 				Size = UDim2.new(1, -2, 0, 34)
 			})
 		end;
@@ -2149,7 +2149,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 					task.wait(delayTick);
 
 					Airflow:CreateAnimation(ToggleFrame,0.7,nil,{
-						BackgroundTransparency = 0.0,
+						BackgroundTransparency = 0.800,
 						Size = UDim2.new(1, -2, 0, 34)
 					})
 
@@ -2227,7 +2227,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 
 		SliderFrame.Name = Airflow:RandomString()
 		SliderFrame.Parent = element
-		SliderFrame.BackgroundColor3 = Color3.fromRGB(26, 26, 38)
+		SliderFrame.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
 		SliderFrame.BackgroundTransparency = 1
 		SliderFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		SliderFrame.BorderSizePixel = 0
@@ -2346,7 +2346,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 			})
 
 			task.delay(0.4,Airflow.CreateAnimation,Airflow,SliderFrame,0.5,nil,{
-				BackgroundTransparency = 0.0,
+				BackgroundTransparency = 0.800,
 				Size = UDim2.new(1, -2, 0, 50)
 			})
 		end
@@ -2447,7 +2447,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 					task.wait(delayTick);
 
 					Airflow:CreateAnimation(SliderFrame,0.7,nil,{
-						BackgroundTransparency = 0.0,
+						BackgroundTransparency = 0.800,
 						Size = UDim2.new(1, -2, 0, 50)
 					})
 
@@ -2579,7 +2579,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 
 		KeybindFrame.Name = Airflow:RandomString()
 		KeybindFrame.Parent = element
-		KeybindFrame.BackgroundColor3 = Color3.fromRGB(26, 26, 38)
+		KeybindFrame.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
 		KeybindFrame.BackgroundTransparency = 1
 		KeybindFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		KeybindFrame.BorderSizePixel = 0
@@ -2645,7 +2645,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 			})
 
 			task.delay(0.5,Airflow.CreateAnimation,Airflow,block,0.5,nil,{
-				BackgroundTransparency = 0.0,
+				BackgroundTransparency = 0.5,
 			})
 
 			task.delay(0.5,Airflow.CreateAnimation,Airflow,PText,0.5,nil,{
@@ -2653,7 +2653,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 			})
 
 			task.delay(0.4,Airflow.CreateAnimation,Airflow,KeybindFrame,0.5,nil,{
-				BackgroundTransparency = 0.0,
+				BackgroundTransparency = 0.800,
 				Size = UDim2.new(1, -2, 0, 35)
 			})
 		end;
@@ -2749,7 +2749,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 					task.wait(delayTick);
 
 					Airflow:CreateAnimation(KeybindFrame,0.7,nil,{
-						BackgroundTransparency = 0.0,
+						BackgroundTransparency = 0.800,
 						Size = UDim2.new(1, -2, 0, 35)
 					})
 
@@ -2816,7 +2816,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 
 		TextboxFrame.Name = Airflow:RandomString()
 		TextboxFrame.Parent = element
-		TextboxFrame.BackgroundColor3 = Color3.fromRGB(26, 26, 38)
+		TextboxFrame.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
 		TextboxFrame.BackgroundTransparency = 1
 		TextboxFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		TextboxFrame.BorderSizePixel = 0
@@ -2898,7 +2898,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 
 		if OnChange:GetAttribute('Value') then
 			task.delay(0.5,Airflow.CreateAnimation,Airflow,block,0.5,nil,{
-				BackgroundTransparency = 0.000
+				BackgroundTransparency = 0.500
 			})
 
 			task.delay(0.5,Airflow.CreateAnimation,Airflow,PText,0.5,nil,{
@@ -2910,7 +2910,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 			})
 
 			task.delay(0.4,Airflow.CreateAnimation,Airflow,TextboxFrame,0.5,nil,{
-				BackgroundTransparency = 0.0,
+				BackgroundTransparency = 0.800,
 			})
 		end;
 
@@ -3009,7 +3009,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 					task.wait(delayTick);
 
 					Airflow:CreateAnimation(block,0.7,nil,{
-						BackgroundTransparency = 0.0
+						BackgroundTransparency = 0.500
 					})
 
 					Airflow:CreateAnimation(PText,0.7,nil,{
@@ -3021,7 +3021,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 					})
 
 					Airflow:CreateAnimation(TextboxFrame,0.6,nil,{
-						BackgroundTransparency = 0.0,
+						BackgroundTransparency = 0.800,
 					})
 
 				else
@@ -3072,7 +3072,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 
 		ColorPickerFrame.Name = Airflow:RandomString()
 		ColorPickerFrame.Parent = element;
-		ColorPickerFrame.BackgroundColor3 = Color3.fromRGB(26, 26, 38)
+		ColorPickerFrame.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
 		ColorPickerFrame.BackgroundTransparency = 1
 		ColorPickerFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		ColorPickerFrame.BorderSizePixel = 0
@@ -3135,7 +3135,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 			})
 
 			task.delay(0.4,Airflow.CreateAnimation,Airflow,ColorPickerFrame,0.5,nil,{
-				BackgroundTransparency = 0.0,
+				BackgroundTransparency = 0.800,
 			})
 		end;
 
@@ -3199,7 +3199,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 					task.wait(delayTick);
 
 					Airflow:CreateAnimation(ColorPickerFrame,0.7,nil,{
-						BackgroundTransparency = 0.0,
+						BackgroundTransparency = 0.800,
 					})
 
 					Airflow:CreateAnimation(PText,0.6,nil,{
@@ -3251,7 +3251,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 
 		ParagraphFrame.Name = Airflow:RandomString()
 		ParagraphFrame.Parent = element
-		ParagraphFrame.BackgroundColor3 = Color3.fromRGB(26, 26, 38)
+		ParagraphFrame.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
 		ParagraphFrame.BackgroundTransparency = 1
 		ParagraphFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		ParagraphFrame.BorderSizePixel = 0
@@ -3307,7 +3307,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 			})
 
 			task.delay(0.4,Airflow.CreateAnimation,Airflow,ParagraphFrame,0.5,nil,{
-				BackgroundTransparency = 0.0,
+				BackgroundTransparency = 0.800,
 			})
 		end;
 
@@ -3360,7 +3360,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 					task.wait(delayTick);
 
 					Airflow:CreateAnimation(ParagraphFrame,0.7,nil,{
-						BackgroundTransparency = 0.0,
+						BackgroundTransparency = 0.800,
 					})
 
 					Airflow:CreateAnimation(PText,0.6,nil,{
@@ -3454,7 +3454,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 
 		DropdownFrame.Name = Airflow:RandomString()
 		DropdownFrame.Parent = element
-		DropdownFrame.BackgroundColor3 = Color3.fromRGB(26, 26, 38)
+		DropdownFrame.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
 		DropdownFrame.BackgroundTransparency = 1
 		DropdownFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		DropdownFrame.BorderSizePixel = 0
@@ -3549,7 +3549,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 		LineV.Name = Airflow:RandomString()
 		LineV.Parent = DropdownInner
 		LineV.BackgroundColor3 = Color3.fromRGB(63, 63, 63)
-		LineV.BackgroundTransparency = 0.0
+		LineV.BackgroundTransparency = 0.500
 		LineV.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		LineV.BorderSizePixel = 0
 		LineV.Size = UDim2.new(1, 0, 0, 1)
@@ -3589,7 +3589,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 			})
 
 			task.delay(0.4,Airflow.CreateAnimation,Airflow,DropdownFrame,0.5,nil,{
-				BackgroundTransparency = 0.0,
+				BackgroundTransparency = 0.800,
 				Size = UDim2.new(1, -2, 0, 35)
 			})
 		end;
@@ -3857,7 +3857,7 @@ function Airflow:Elements(element : Frame,OnChange : BindableEvent , windowConfi
 					task.wait(delayTick);
 
 					Airflow:CreateAnimation(DropdownFrame,0.7,nil,{
-						BackgroundTransparency = 0.0,
+						BackgroundTransparency = 0.800,
 						Size = UDim2.new(1, -2, 0, 35)
 					})
 
@@ -3992,11 +3992,11 @@ function Airflow:Init(config)
 
 			Airflow:CreateAnimation(WindowFrame,0.5,nil,{
 				Size = config.Scale;
-				BackgroundTransparency = 0.0;
+				BackgroundTransparency = 0.600;
 			})
 
 			Airflow:CreateAnimation(MainFrame,0.45,nil,{
-				BackgroundTransparency = 0.0;
+				BackgroundTransparency = 0.3;
 			})
 
 			Airflow:CreateAnimation(LineH,0.45,nil,{
@@ -4107,7 +4107,7 @@ function Airflow:Init(config)
 	WindowFrame.Name = Airflow:RandomString()
 	WindowFrame.Parent = AirflowWindow
 	WindowFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-	WindowFrame.BackgroundColor3 = Color3.fromRGB(16, 16, 24)
+	WindowFrame.BackgroundColor3 = Color3.fromRGB(166, 166, 166)
 	WindowFrame.BackgroundTransparency = 1
 	WindowFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	WindowFrame.BorderSizePixel = 0
@@ -4121,7 +4121,7 @@ function Airflow:Init(config)
 	MainFrame.Name = Airflow:RandomString()
 	MainFrame.Parent = WindowFrame
 	MainFrame.AnchorPoint = Vector2.new(0, 1)
-	MainFrame.BackgroundColor3 = Color3.fromRGB(16, 16, 24)
+	MainFrame.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
 	MainFrame.BackgroundTransparency = 1
 	MainFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	MainFrame.BorderSizePixel = 0
@@ -4132,8 +4132,8 @@ function Airflow:Init(config)
 
 	TabElements.Name = Airflow:RandomString()
 	TabElements.Parent = MainFrame
-	TabElements.BackgroundColor3 = Color3.fromRGB(16, 16, 24)
-	TabElements.BackgroundTransparency = 0.0
+	TabElements.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	TabElements.BackgroundTransparency = 1.000
 	TabElements.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	TabElements.BorderSizePixel = 0
 	TabElements.Position = UDim2.new(0, 155, 0, 0)
@@ -4142,8 +4142,8 @@ function Airflow:Init(config)
 
 	TabInputs.Name = Airflow:RandomString()
 	TabInputs.Parent = MainFrame
-	TabInputs.BackgroundColor3 = Color3.fromRGB(12, 12, 20)
-	TabInputs.BackgroundTransparency = 0.0
+	TabInputs.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	TabInputs.BackgroundTransparency = 1.000
 	TabInputs.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	TabInputs.BorderSizePixel = 0
 	TabInputs.ClipsDescendants = true
@@ -4303,7 +4303,7 @@ function Airflow:Init(config)
 
 		InputElement.Name = Airflow:RandomString()
 		InputElement.Parent = ListInputs;
-		InputElement.BackgroundColor3 = Color3.fromRGB(26, 26, 38)
+		InputElement.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
 		InputElement.BackgroundTransparency = 1
 		InputElement.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		InputElement.BorderSizePixel = 0
@@ -4477,7 +4477,7 @@ function Airflow:Init(config)
 				});
 
 				Airflow:CreateAnimation(InputElement,0.4,nil,{
-					BackgroundTransparency = 0.0
+					BackgroundTransparency = 0.8
 				});
 
 				Airflow:CreateAnimation(PText,0.4,nil,{
@@ -4519,7 +4519,7 @@ function Airflow:Init(config)
 				})
 
 				Airflow:CreateAnimation(InputElement,0.4,nil,{
-				Airflow:CreateAnimation(InputElement,0.4,nil,{
+					BackgroundTransparency = 1
 				});
 
 				Airflow:CreateAnimation(hightlight,0.4,nil,{
@@ -4548,11 +4548,11 @@ function Airflow:Init(config)
 		InputElement.MouseEnter:Connect(function()
 			if Response.OpenedTab ~= ChangeValue then
 				Airflow:CreateAnimation(InputElement,0.4,nil,{
-					BackgroundTransparency = 0.05
+					BackgroundTransparency = 0.85
 				});
 			else
 				Airflow:CreateAnimation(InputElement,0.4,nil,{
-					BackgroundTransparency = 0.0
+					BackgroundTransparency = 0.8
 				});
 			end;
 		end);
@@ -4560,11 +4560,11 @@ function Airflow:Init(config)
 		InputElement.MouseLeave:Connect(function()
 			if Response.OpenedTab ~= ChangeValue then
 				Airflow:CreateAnimation(InputElement,0.4,nil,{
-				Airflow:CreateAnimation(InputElement,0.4,nil,{
+					BackgroundTransparency = 1
 				});
 			else
 				Airflow:CreateAnimation(InputElement,0.4,nil,{
-					BackgroundTransparency = 0.0
+					BackgroundTransparency = 0.8
 				});
 			end;
 		end);
@@ -5076,19 +5076,19 @@ function Airflow:DrawList(config)
 	local ToggleFun = function(value)
 		if value then
 			Airflow:CreateAnimation(ListFrame,0.3,nil,{
-				BackgroundTransparency = 0.0
+				BackgroundTransparency = 0.600
 			});
 
 			Airflow:CreateAnimation(MainFrame,0.3,nil,{
-				BackgroundTransparency = 0.0
+				BackgroundTransparency = 0.3
 			});
 
 			Airflow:CreateAnimation(LineV,0.3,nil,{
-				BackgroundTransparency = 0.0
+				BackgroundTransparency = 0.500
 			});
 
 			Airflow:CreateAnimation(LineV,0.3,nil,{
-				BackgroundTransparency = 0.0
+				BackgroundTransparency = 0.500
 			});
 
 			Airflow:CreateAnimation(UIStroke,0.3,nil,{
@@ -5161,7 +5161,7 @@ function Airflow:DrawList(config)
 	ListFrame.Active = true
 	ListFrame.Name = Airflow:RandomString()
 	ListFrame.Parent = AirflowUI
-	ListFrame.BackgroundColor3 = Color3.fromRGB(16, 16, 24)
+	ListFrame.BackgroundColor3 = Color3.fromRGB(166, 166, 166)
 	ListFrame.BackgroundTransparency = 1
 	ListFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	ListFrame.BorderSizePixel = 0
@@ -5184,7 +5184,7 @@ function Airflow:DrawList(config)
 	MainFrame.Name = Airflow:RandomString()
 	MainFrame.Parent = ListFrame
 	MainFrame.AnchorPoint = Vector2.new(0, 1)
-	MainFrame.BackgroundColor3 = Color3.fromRGB(16, 16, 24)
+	MainFrame.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
 	MainFrame.BackgroundTransparency = 1
 	MainFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	MainFrame.BorderSizePixel = 0
@@ -5438,7 +5438,7 @@ do
 
 		MainFrame.Name = Airflow:RandomString()
 		MainFrame.Parent = Frame
-		MainFrame.BackgroundColor3 = Color3.fromRGB(16, 16, 24)
+		MainFrame.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
 		MainFrame.BackgroundTransparency = 0.200
 		MainFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		MainFrame.BorderSizePixel = 0
@@ -5731,7 +5731,7 @@ function Airflow:DrawLoader(loader_config : Loader)
 	TabBths.Name = "TabBths"
 	TabBths.Parent = Body
 	TabBths.AnchorPoint = Vector2.new(0, 0.5)
-	TabBths.BackgroundColor3 = Color3.fromRGB(26, 26, 38)
+	TabBths.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
 	TabBths.BackgroundTransparency = 1.000
 	TabBths.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	TabBths.BorderSizePixel = 0
@@ -5765,7 +5765,7 @@ function Airflow:DrawLoader(loader_config : Loader)
 	TabFrame.Name = "TabFrame"
 	TabFrame.Parent = Body
 	TabFrame.AnchorPoint = Vector2.new(0, 0.5)
-	TabFrame.BackgroundColor3 = Color3.fromRGB(26, 26, 38)
+	TabFrame.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
 	TabFrame.BackgroundTransparency = 1.000
 	TabFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	TabFrame.BorderSizePixel = 0
@@ -5808,7 +5808,7 @@ function Airflow:DrawLoader(loader_config : Loader)
 
 		LoaderGame.Name = "LoaderGame"
 		LoaderGame.Parent = ScrollingFrame
-		LoaderGame.BackgroundColor3 = Color3.fromRGB(26, 26, 38)
+		LoaderGame.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
 		LoaderGame.BackgroundTransparency = 0.650
 		LoaderGame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		LoaderGame.BorderSizePixel = 0
@@ -5893,7 +5893,7 @@ function Airflow:DrawLoader(loader_config : Loader)
 		versionLoaders.Name = "versionLoaders"
 		versionLoaders.Parent = bthFrame
 		versionLoaders.AnchorPoint = Vector2.new(0.5, 0)
-		versionLoaders.BackgroundColor3 = Color3.fromRGB(26, 26, 38)
+		versionLoaders.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
 		versionLoaders.BackgroundTransparency = 1.000
 		versionLoaders.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		versionLoaders.BorderSizePixel = 0
@@ -6128,7 +6128,7 @@ function Airflow:DrawLoader(loader_config : Loader)
 
 			LoaderVersion.Name = "LoaderVersion"
 			LoaderVersion.Parent = ScrollingFrame
-			LoaderVersion.BackgroundColor3 = Color3.fromRGB(26, 26, 38)
+			LoaderVersion.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
 			LoaderVersion.BackgroundTransparency = 1.000
 			LoaderVersion.BorderColor3 = Color3.fromRGB(255, 255, 255)
 			LoaderVersion.BorderSizePixel = 0
