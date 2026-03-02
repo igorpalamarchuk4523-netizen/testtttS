@@ -1,8 +1,4 @@
-local Players      = game:GetService("Players")
-local TweenService = game:GetService("TweenService")
-local UIS          = game:GetService("UserInputService")
-local CoreGui      = game:GetService("CoreGui")
-local lp           = Players.LocalPlayer
+
 
 -- ════════════════════════════════ 
 --  Colors
