@@ -1,28 +1,3 @@
-
---[[
-╔══════════════════════════════════════════════════════╗
-║          C E L E S T I A   U I   L I B R A R Y      ║
-║       Clean library — no demo code                   ║
-╚══════════════════════════════════════════════════════╝
-
-USAGE EXAMPLE (в твоём основном скрипте):
-    local UI  = loadstring(game:HttpGet("RAW_URL"))()
-    local win = UI:CreateWindow({ Title="Celestia", Subtitle="Blade Ball Cheat" })
-
-    local nav  = win:Category("BLATANT")
-    local main = nav:Tab({ Title = "Main" })
-
-    local c1 = main:Card({ Title = "Auto Parry" })
-    c1:Toggle({ Title="Auto Parry", Default=false, Callback=function(v) ... end })
-    c1:Slider({ Title="Parry Accuracy", Min=1, Max=100, Default=100, Callback=function(v) ... end })
-    c1:Dropdown({ Title="Curve Type", Options={"Camera","Random","Backwards"}, Default="Camera", Callback=function(v) ... end })
-
-    win:Show()
-]]
-
--- ════════════════════════════════
---  Services
--- ════════════════════════════════
 local Players      = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local UIS          = game:GetService("UserInputService")
@@ -902,3 +877,4 @@ function CelestiaUI:CreateWindow(opts)
 end
 
 return CelestiaUI
+
