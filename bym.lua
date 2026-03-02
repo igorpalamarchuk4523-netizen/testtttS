@@ -699,12 +699,28 @@ function CelestiaUI:CreateWindow(opts)
                             local listW   = absSize.X
                             listH_px      = math.min(#opts2 * 30 + 8, 150)
 
-                            dList.Size     = UDim2.fromOffset(listW, 0)
-                            dList.Position = UDim2.fromOffset(absPos.X, absPos.Y + absSize.Y + 4)
-                            dList.Visible  = true
+                            -- учитываем GuiInset
+                            local inset = game:GetService("GuiService"):GetGuiInset()
+                            local screenY = absPos.Y - inset.Y
+
+                            -- проверка — хватает ли места снизу
+                            local screenHeight = workspace.CurrentCamera.ViewportSize.Y
+                            local openDown = (screenY + absSize.Y + listH_px + 6) < screenHeight
+
+                            dList.Size = UDim2.fromOffset(listW, 0)
+
+                            if openDown then
+                                -- открываем вниз
+                                dList.Position = UDim2.fromOffset(absPos.X, absPos.Y + absSize.Y + 4)
+                            else
+                            -- открываем вверх если не помещается
+                                dList.Position = UDim2.fromOffset(absPos.X, absPos.Y - listH_px - 4)
+                            end
+
+                            dList.Visible = true
                             blocker.Visible = true
 
-                            tw(dList, {Size=UDim2.fromOffset(listW, listH_px)}, 0.2, Enum.EasingStyle.Back)
+                            tw(dList, {Size=UDim2.fromOffset(listW, listH_px)}, 0.18, Enum.EasingStyle.Quart)
                             chev.Text = "^"
                         end
                     end)
