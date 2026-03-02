@@ -214,30 +214,65 @@ local function btn(props, parent)
 end
 
 -- ════════════════════════════════════════════════════════
---  GLOW HELPER  (uses ImageLabel with a radial blur asset)
---  Roblox asset: rbxassetid://5028857472  (white radial blur)
+--  GLOW HELPER
+--  Многослойный глоу через полупрозрачные фреймы + UICorner
+--  Работает без внешних assetid
 -- ════════════════════════════════════════════════════════
-local GLOW_ASSET = "rbxassetid://5028857472"
 
+-- Создаёт "ауру" вокруг элемента: несколько концентрических
+-- полупрозрачных прямоугольников с нарастающим corner radius
 local function makeGlow(parent, size, color, transparency)
-    local g = new("ImageLabel", {
-        Name                   = "Glow",
+    transparency = transparency or 0.55
+    color        = color or Color3.fromRGB(88, 78, 208)
+    size         = size  or 80
+
+    local container = new("Frame", {
+        Name                   = "GlowContainer",
         AnchorPoint            = Vector2.new(0.5, 0.5),
-        Size                   = UDim2.fromOffset(size or 80, size or 80),
+        Size                   = UDim2.fromOffset(size, size),
         Position               = UDim2.new(0.5, 0, 0.5, 0),
         BackgroundTransparency = 1,
-        Image                  = GLOW_ASSET,
-        ImageColor3            = color or C.GlowAccent,
-        ImageTransparency      = transparency or 0.55,
-        ZIndex                 = 1,
-        ScaleType              = Enum.ScaleType.Stretch,
+        ZIndex                 = parent.ZIndex or 1,
+        ClipsDescendants       = false,
     }, parent)
-    return g
+
+    -- 4 слоя, каждый чуть больше предыдущего и прозрачнее
+    local layers = {
+        { expand = 0,  alpha = transparency + 0.00 },
+        { expand = 6,  alpha = transparency + 0.15 },
+        { expand = 12, alpha = transparency + 0.30 },
+        { expand = 20, alpha = transparency + 0.48 },
+    }
+    for _, l in ipairs(layers) do
+        local f = new("Frame", {
+            AnchorPoint            = Vector2.new(0.5, 0.5),
+            Size                   = UDim2.fromOffset(size + l.expand, size + l.expand),
+            Position               = UDim2.new(0.5, 0, 0.5, 0),
+            BackgroundColor3       = color,
+            BackgroundTransparency = math.min(l.alpha, 0.98),
+            BorderSizePixel        = 0,
+            ZIndex                 = (parent.ZIndex or 1),
+        }, container)
+        corner(f, math.floor((size + l.expand) / 2))
+    end
+
+    return container
 end
 
--- Glow for card header icon
+-- Маленький глоу для иконки карточки
 local function makeIconGlow(parent, color)
-    return makeGlow(parent, 60, color or C.GlowAccent, 0.5)
+    return makeGlow(parent, 34, color or Color3.fromRGB(88, 78, 208), 0.72)
+end
+
+-- Глоу-обводка для активных элементов (toggle on, checkbox on)
+local function makeAccentGlow(frame, color, radius)
+    local g = new("UIStroke", {
+        Color        = color or Color3.fromRGB(88, 78, 208),
+        Thickness    = 2,
+        Transparency = 0.0,
+        ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+    }, frame)
+    return g
 end
 
 -- ════════════════════════════════════════════════════════
@@ -301,12 +336,7 @@ function CelestiaUI:Notify(o)
     corner(card, 10)
     stroke(card, accent, 1, 0.4)
 
-    -- Glow behind card
-    local glowF = new("Frame", {
-        Size=UDim2.new(1,0,1,0), BackgroundTransparency=1,
-        ZIndex=500, ClipsDescendants=false,
-    }, card)
-    makeGlow(glowF, 200, glowCol, 0.75)
+    -- Акцентная полоска слева уже создаёт визуальный акцент
 
     -- Left accent bar
     new("Frame", {
@@ -402,16 +432,33 @@ function CelestiaUI:CreateWindow(opts)
         Rotation = 135,
     }, Root)
 
-    -- Glow around the whole window edges (subtle)
+    -- Glow вокруг окна через вложенные фреймы
     local rootGlowContainer = new("Frame", {
         Name                   = "RootGlow",
-        Size                   = UDim2.new(1, 80, 1, 80),
-        AnchorPoint            = Vector2.new(0.5, 0.5),
-        Position               = UDim2.new(0.5, 0, 0.5, 0),
+        Size                   = UDim2.new(1, 0, 1, 0),
+        Position               = UDim2.fromOffset(0, 0),
         BackgroundTransparency = 1,
         ZIndex                 = 9,
-    }, SG)
-    makeGlow(rootGlowContainer, 900, C.GlowAccent, 0.88)
+        ClipsDescendants       = false,
+    }, Root)
+    local winGlowData = {
+        { exp = 3,  al = 0.72 },
+        { exp = 7,  al = 0.82 },
+        { exp = 12, al = 0.90 },
+        { exp = 18, al = 0.95 },
+    }
+    for _, gd in ipairs(winGlowData) do
+        local gf = new("Frame", {
+            AnchorPoint            = Vector2.new(0.5, 0.5),
+            Size                   = UDim2.new(1, gd.exp*2, 1, gd.exp*2),
+            Position               = UDim2.new(0.5, 0, 0.5, 0),
+            BackgroundColor3       = C.Accent,
+            BackgroundTransparency = gd.al,
+            BorderSizePixel        = 0,
+            ZIndex                 = 9,
+        }, rootGlowContainer)
+        corner(gf, 14 + gd.exp)
+    end
 
     -- ── Header ─────────────────────────────────────────
     local Hdr = new("Frame", {
@@ -462,13 +509,25 @@ function CelestiaUI:CreateWindow(opts)
         }),
         Rotation = 135,
     }, hIconBox)
-    makeGlow(hIconContainer, 70, C.GlowAccent, 0.6)
+    -- Header icon glow layers
+    for _, gd in ipairs({{exp=6,al=0.68},{exp=12,al=0.80},{exp=20,al=0.90}}) do
+        local gf = new("Frame", {
+            AnchorPoint            = Vector2.new(0.5,0.5),
+            Size                   = UDim2.fromOffset(38+gd.exp*2, 38+gd.exp*2),
+            Position               = UDim2.new(0.5,0,0.5,0),
+            BackgroundColor3       = C.Accent,
+            BackgroundTransparency = gd.al,
+            BorderSizePixel        = 0,
+            ZIndex                 = 12,
+        }, hIconContainer)
+        corner(gf, 10 + gd.exp)
+    end
     lbl({
         Size             = UDim2.new(1, 0, 1, 0),
-        Text             = "✦",
-        TextColor3       = C.AccentBr,
+        Text             = "⬡",
+        TextColor3       = C.White,
         Font             = Enum.Font.GothamBold,
-        TextSize         = 18,
+        TextSize         = 20,
         TextXAlignment   = Enum.TextXAlignment.Center,
         ZIndex           = 14,
     }, hIconBox)
@@ -538,10 +597,8 @@ function CelestiaUI:CreateWindow(opts)
     end)
     xBtn.MouseButton1Click:Connect(function()
         tw(Root, { Size = UDim2.fromOffset(820, 0) }, 0.22, Enum.EasingStyle.Quart)
-        tw(rootGlowContainer, { GroupTransparency = 1 }, 0.2)
         task.delay(0.26, function()
             Root.Visible = false
-            rootGlowContainer.GroupTransparency = 0
         end)
     end)
 
@@ -563,11 +620,7 @@ function CelestiaUI:CreateWindow(opts)
                 dragStartPos.Y.Scale,
                 dragStartPos.Y.Offset + delta.Y
             )
-            -- Move glow with window
-            rootGlowContainer.Position = UDim2.fromOffset(
-                Root.AbsolutePosition.X + Root.AbsoluteSize.X * 0.5,
-                Root.AbsolutePosition.Y + Root.AbsoluteSize.Y * 0.5
-            )
+
         end
     end)
     UIS.InputEnded:Connect(function(inp)
@@ -644,6 +697,11 @@ function CelestiaUI:CreateWindow(opts)
             tw(t.dot, { BackgroundTransparency = 1 }, 0.14)
             if t.iconBox then
                 tw(t.iconBox, { BackgroundColor3 = C.IconBG }, 0.14)
+            end
+            if t.iconGlows then
+                for _, g in ipairs(t.iconGlows) do
+                    tw(g.frame, { BackgroundTransparency = 1 }, 0.14)
+                end
             end
         end
     end
@@ -805,6 +863,28 @@ function CelestiaUI:CreateWindow(opts)
             local tabInfo = { btn = rowBtn, lbl = rowLbl, dot = dot, page = Page, iconBox = iBox }
             table.insert(allTabs, tabInfo)
 
+            -- Sidebar icon glow layers (created once)
+            local sidebarIconGlow = {}
+            do
+                local glowData3 = { {exp=4, al=0.80}, {exp=8, al=0.88} }
+                for _, gd in ipairs(glowData3) do
+                    local gf = new("Frame", {
+                        AnchorPoint            = Vector2.new(0.5,0.5),
+                        Size                   = UDim2.fromOffset(26+gd.exp*2, 26+gd.exp*2),
+                        Position               = UDim2.new(0.5,0,0.5,0),
+                        BackgroundColor3       = C.Accent,
+                        BackgroundTransparency = 1, -- hidden by default
+                        BorderSizePixel        = 0,
+                        ZIndex                 = 15,
+                    }, iBox)
+                    corner(gf, 7 + gd.exp)
+                    table.insert(sidebarIconGlow, {frame=gf, al=gd.al})
+                end
+            end
+
+            local tabInfo = { btn = rowBtn, lbl = rowLbl, dot = dot, page = Page, iconBox = iBox, iconGlows = sidebarIconGlow }
+            table.insert(allTabs, tabInfo)
+
             local function activateTab()
                 deactivateAll()
                 activeTab      = tabInfo
@@ -813,6 +893,9 @@ function CelestiaUI:CreateWindow(opts)
                 tw(rowLbl, { TextColor3 = C.Text }, 0.14)
                 tw(dot,    { BackgroundTransparency = 0 }, 0.14)
                 tw(iBox,   { BackgroundColor3 = C.AccentDim }, 0.14)
+                for _, g in ipairs(sidebarIconGlow) do
+                    tw(g.frame, { BackgroundTransparency = g.al }, 0.2)
+                end
                 task.defer(updateLayout)
             end
 
@@ -912,8 +995,24 @@ function CelestiaUI:CreateWindow(opts)
                     }),
                     Rotation = 135,
                 }, ciBox)
-                -- Glow behind icon
-                makeIconGlow(ciContainer, C.GlowAccent)
+                -- Glow behind icon (layered frames)
+                do
+                    local glowData2 = {
+                        {exp=4, al=0.70}, {exp=9, al=0.82}, {exp=14, al=0.91}
+                    }
+                    for _, gd in ipairs(glowData2) do
+                        local gf = new("Frame", {
+                            AnchorPoint            = Vector2.new(0.5,0.5),
+                            Size                   = UDim2.fromOffset(34+gd.exp*2, 34+gd.exp*2),
+                            Position               = UDim2.new(0.5,0,0.5,0),
+                            BackgroundColor3       = C.Accent,
+                            BackgroundTransparency = gd.al,
+                            BorderSizePixel        = 0,
+                            ZIndex                 = 17,
+                        }, ciContainer)
+                        corner(gf, 9 + gd.exp)
+                    end
+                end
 
                 lbl({
                     Size           = UDim2.new(1, 0, 1, 0),
@@ -1110,7 +1209,6 @@ function CelestiaUI:CreateWindow(opts)
                         BackgroundTransparency = 1,
                         ZIndex                 = 21,
                     }, track)
-                    makeGlow(knobContainer, 30, C.GlowAccent, 0.5)
                     local knob = new("Frame", {
                         Size             = UDim2.fromOffset(14, 14),
                         AnchorPoint      = Vector2.new(0.5, 0.5),
@@ -1119,7 +1217,24 @@ function CelestiaUI:CreateWindow(opts)
                         ZIndex           = 22,
                     }, knobContainer)
                     corner(knob, 100)
-                    stroke(knob, C.AccentBr, 2, 0.2)
+                    -- Knob glow ring
+                    new("UIStroke", {
+                        Color        = C.AccentBr,
+                        Thickness    = 2,
+                        Transparency = 0.15,
+                        ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+                    }, knob)
+                    -- Outer knob glow frame
+                    local knobGlowFrame = new("Frame", {
+                        AnchorPoint            = Vector2.new(0.5,0.5),
+                        Size                   = UDim2.fromOffset(22, 22),
+                        Position               = UDim2.new(0.5, 0, 0.5, 0),
+                        BackgroundColor3       = C.Accent,
+                        BackgroundTransparency = 0.65,
+                        BorderSizePixel        = 0,
+                        ZIndex                 = 21,
+                    }, knobContainer)
+                    corner(knobGlowFrame, 100)
 
                     -- SetVal function
                     local function setVal(v, noCallback)
@@ -1472,7 +1587,6 @@ function CelestiaUI:CreateWindow(opts)
                         BackgroundTransparency = 1,
                         ZIndex                 = 19,
                     }, trackF)
-                    makeGlow(knobContainer, 26, C.GlowAccent, val and 0.5 or 1)
                     local knobT = new("Frame", {
                         Size             = UDim2.fromOffset(18, 18),
                         AnchorPoint      = Vector2.new(0.5, 0.5),
@@ -1481,6 +1595,13 @@ function CelestiaUI:CreateWindow(opts)
                         ZIndex           = 20,
                     }, knobContainer)
                     corner(knobT, 100)
+                    -- Knob shadow/glow
+                    local knobGlowStroke = new("UIStroke", {
+                        Color        = C.AccentBr,
+                        Thickness    = val and 2 or 0,
+                        Transparency = 0.3,
+                        ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+                    }, knobT)
 
                     local function setToggle(s)
                         val = s
@@ -1492,9 +1613,9 @@ function CelestiaUI:CreateWindow(opts)
                             ColorSequenceKeypoint.new(0, s and C.SliderFillBr or C.Surface),
                             ColorSequenceKeypoint.new(1, s and C.SliderFill   or C.TogOFF),
                         })
-                        local glow = knobContainer:FindFirstChildOfClass("ImageLabel")
-                        if glow then
-                            tw(glow, { ImageTransparency = s and 0.5 or 1 }, 0.15)
+                        -- update knob stroke glow
+                        if knobGlowStroke then
+                            knobGlowStroke.Thickness = s and 2 or 0
                         end
                         if o.Callback then o.Callback(s) end
                     end
@@ -2074,7 +2195,7 @@ function CelestiaUI:CreateWindow(opts)
                         ZIndex           = 18,
                     }, row)
                     corner(dot2, 100)
-                    makeGlow(row, 20, col2, 0.4)
+                    -- status glow via dot pulse
 
                     lbl({
                         Size       = UDim2.new(1, -16, 1, 0),
