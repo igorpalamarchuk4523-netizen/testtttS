@@ -707,7 +707,7 @@ function CelestiaUI:CreateWindow(opts)
                             local screenHeight = workspace.CurrentCamera.ViewportSize.Y
                             local openDown = (screenY + absSize.Y + listH_px + 6) < screenHeight
 
-                            dList.Size = UDim2.fromOffset(listW, 0)
+                            dList.Size = UDim2.fromOffset(listW, 0) 
 
                             if openDown then
                                 -- открываем вниз
