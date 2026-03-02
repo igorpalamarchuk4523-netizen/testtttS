@@ -520,57 +520,58 @@ function CelestiaUI:CreateWindow(opts)
                     local sSuf = o.Suffix or ""
 
                     local wrap = new("Frame", {
-                        Size=UDim2.new(1,0,0,56), BackgroundTransparency=1, ZIndex=17,
+                        Size=UDim2.new(1,0,0,52), BackgroundTransparency=1, ZIndex=17,
                     }, inner)
                     listV(wrap, 6)
 
+                    -- Верхняя строка: название слева, значение справа
                     local topRow = new("Frame", {
                         Size=UDim2.new(1,0,0,18), BackgroundTransparency=1, ZIndex=18,
                     }, wrap)
-                    lbl({Size=UDim2.new(0.6,0,1,0), Text=o.Title or "Slider",
+                    lbl({Size=UDim2.new(0.65,0,1,0), Text=o.Title or "Slider",
                          TextColor3=C.Text, Font=Enum.Font.GothamSemibold, TextSize=12, ZIndex=19}, topRow)
                     local valLbl = lbl({
-                        Size=UDim2.new(0.4,0,1,0), AnchorPoint=Vector2.new(1,0),
-                        Position=UDim2.new(1,0,0,0), Text=sVal..sSuf,
+                        Size=UDim2.new(0.35,0,1,0), AnchorPoint=Vector2.new(1,0),
+                        Position=UDim2.new(1,0,0,0), Text=tostring(sVal)..sSuf,
                         TextColor3=C.Accent, Font=Enum.Font.GothamBold, TextSize=12,
                         TextXAlignment=Enum.TextXAlignment.Right, ZIndex=19,
                     }, topRow)
 
+                    -- Нижняя строка: кнопка минус, трек, кнопка плюс
                     local slRow = new("Frame", {
-                        Size=UDim2.new(1,0,0,28), BackgroundTransparency=1, ZIndex=18,
+                        Size=UDim2.new(1,0,0,24), BackgroundTransparency=1, ZIndex=18,
                     }, wrap)
 
-                    local function mkPM(txt, anchorX, xOff)
-                        local b = new("TextButton", {
-                            Size=UDim2.fromOffset(20,20), AnchorPoint=Vector2.new(anchorX,0.5),
-                            Position=UDim2.new(anchorX,xOff,0.5,0),
-                            BackgroundColor3=C.Surface, Text=txt,
-                            TextColor3=C.TextSub, Font=Enum.Font.GothamBold, TextSize=14,
-                            AutoButtonColor=false, ZIndex=19,
-                        }, slRow)
-                        corner(b, 5)
-                        stroke(b, C.InputBord, 1, 0.3)
-                        b.MouseEnter:Connect(function() tw(b,{BackgroundColor3=C.SidebarAct},0.1) end)
-                        b.MouseLeave:Connect(function() tw(b,{BackgroundColor3=C.Surface},0.1) end)
-                        return b
-                    end
-
-                    local minusB = mkPM("-", 0, 0)
-                    local plusB  = mkPM("+", 1, 0)
-
-                    local vBox = new("TextBox", {
-                        Size=UDim2.fromOffset(38,22), AnchorPoint=Vector2.new(1,0.5),
-                        Position=UDim2.new(1,-26,0.5,0),
-                        BackgroundColor3=C.Input, Text=tostring(sVal),
-                        TextColor3=C.Text, Font=Enum.Font.GothamSemibold, TextSize=11,
-                        ClearTextOnFocus=false, ZIndex=19,
+                    -- Кнопка минус (слева)
+                    local minusB = new("TextButton", {
+                        Size=UDim2.fromOffset(22,22), AnchorPoint=Vector2.new(0,0.5),
+                        Position=UDim2.new(0,0,0.5,0),
+                        BackgroundColor3=C.Surface, Text="-",
+                        TextColor3=C.TextSub, Font=Enum.Font.GothamBold, TextSize=14,
+                        AutoButtonColor=false, ZIndex=19,
                     }, slRow)
-                    corner(vBox, 5)
-                    stroke(vBox, C.InputBord, 1, 0.2)
+                    corner(minusB, 5)
+                    stroke(minusB, C.InputBord, 1, 0.3)
+                    minusB.MouseEnter:Connect(function() tw(minusB,{BackgroundColor3=C.SidebarAct},0.1) end)
+                    minusB.MouseLeave:Connect(function() tw(minusB,{BackgroundColor3=C.Surface},0.1) end)
 
+                    -- Кнопка плюс (справа)
+                    local plusB = new("TextButton", {
+                        Size=UDim2.fromOffset(22,22), AnchorPoint=Vector2.new(1,0.5),
+                        Position=UDim2.new(1,0,0.5,0),
+                        BackgroundColor3=C.Surface, Text="+",
+                        TextColor3=C.TextSub, Font=Enum.Font.GothamBold, TextSize=14,
+                        AutoButtonColor=false, ZIndex=19,
+                    }, slRow)
+                    corner(plusB, 5)
+                    stroke(plusB, C.InputBord, 1, 0.3)
+                    plusB.MouseEnter:Connect(function() tw(plusB,{BackgroundColor3=C.SidebarAct},0.1) end)
+                    plusB.MouseLeave:Connect(function() tw(plusB,{BackgroundColor3=C.Surface},0.1) end)
+
+                    -- Трек между кнопками
                     local track = new("Frame", {
-                        Size=UDim2.new(1,-90,0,6), AnchorPoint=Vector2.new(0,0.5),
-                        Position=UDim2.new(0,26,0.5,0),
+                        Size=UDim2.new(1,-54,0,6), AnchorPoint=Vector2.new(0,0.5),
+                        Position=UDim2.new(0,28,0.5,0),
                         BackgroundColor3=C.Slider, BorderSizePixel=0, ZIndex=19,
                     }, slRow)
                     corner(track, 100)
@@ -593,17 +594,21 @@ function CelestiaUI:CreateWindow(opts)
                         local pct = (sVal-sMin)/(sMax-sMin)
                         tw(fill,  {Size=UDim2.new(pct,0,1,0)}, 0.1)
                         tw(knob,  {Position=UDim2.new(pct,0,0.5,0)}, 0.1)
-                        valLbl.Text = sVal..sSuf
-                        vBox.Text   = tostring(sVal)
+                        valLbl.Text = tostring(sVal)..sSuf
                         if o.Callback then o.Callback(sVal) end
                     end
 
                     minusB.MouseButton1Click:Connect(function() setVal(sVal-1) end)
                     plusB.MouseButton1Click:Connect(function()  setVal(sVal+1) end)
 
+                    -- Drag по треку
                     local dragging = false
                     track.InputBegan:Connect(function(i)
-                        if i.UserInputType == Enum.UserInputType.MouseButton1 then dragging=true end
+                        if i.UserInputType == Enum.UserInputType.MouseButton1 then
+                            dragging = true
+                            local rel = math.clamp(i.Position.X - track.AbsolutePosition.X, 0, track.AbsoluteSize.X)
+                            setVal(sMin + (rel/track.AbsoluteSize.X)*(sMax-sMin))
+                        end
                     end)
                     UIS.InputEnded:Connect(function(i)
                         if i.UserInputType == Enum.UserInputType.MouseButton1 then dragging=false end
@@ -613,10 +618,6 @@ function CelestiaUI:CreateWindow(opts)
                             local rel = math.clamp(i.Position.X - track.AbsolutePosition.X, 0, track.AbsoluteSize.X)
                             setVal(sMin + (rel/track.AbsoluteSize.X)*(sMax-sMin))
                         end
-                    end)
-                    vBox.FocusLost:Connect(function()
-                        local n = tonumber(vBox.Text)
-                        if n then setVal(n) end
                     end)
 
                     return {Set=setVal, Get=function() return sVal end}
@@ -648,20 +649,47 @@ function CelestiaUI:CreateWindow(opts)
                         TextXAlignment=Enum.TextXAlignment.Center,
                     }, dHead)
 
+                    -- Список парентим к SG чтобы он был поверх ВСЕГО
+                    -- Позиция обновляется при открытии через AbsolutePosition dHead
+                    local listH_px = math.min(#opts2 * 30 + 8, 150)
+
                     local dList = new("Frame", {
-                        Size=UDim2.new(1,0,0,0), Position=UDim2.new(0,0,1,4),
-                        BackgroundColor3=C.Input, ClipsDescendants=true, ZIndex=50, Visible=false,
-                    }, dHead)
+                        Size=UDim2.fromOffset(0, 0),
+                        BackgroundColor3=C.Input,
+                        ClipsDescendants=true,
+                        ZIndex=200,
+                        Visible=false,
+                    }, SG)
                     corner(dList, 7)
                     stroke(dList, C.InputBord, 1, 0.1)
+
+                    -- Прозрачный блокер кликов под списком
+                    local blocker = new("TextButton", {
+                        Size=UDim2.new(1,0,1,0),
+                        BackgroundTransparency=1,
+                        Text="", AutoButtonColor=false,
+                        ZIndex=199, Visible=false,
+                    }, SG)
 
                     local dScroll = new("ScrollingFrame", {
                         Size=UDim2.new(1,0,1,0), BackgroundTransparency=1,
                         ScrollBarThickness=2, ScrollBarImageColor3=C.Accent,
-                        CanvasSize=UDim2.new(0,0,0,0), AutomaticCanvasSize=Enum.AutomaticSize.Y, ZIndex=51,
+                        CanvasSize=UDim2.new(0,0,0,0), AutomaticCanvasSize=Enum.AutomaticSize.Y, ZIndex=201,
                     }, dList)
                     pad(dScroll, 4, 4, 6, 6)
                     listV(dScroll, 2)
+
+                    local function closeDropdown()
+                        isOpen = false
+                        tw(dList, {Size=UDim2.fromOffset(dList.AbsoluteSize.X, 0)}, 0.15)
+                        task.delay(0.18, function()
+                            dList.Visible  = false
+                            blocker.Visible = false
+                        end)
+                        chev.Text = "v"
+                    end
+
+                    blocker.MouseButton1Click:Connect(closeDropdown)
 
                     for _, opt in ipairs(opts2) do
                         local ob = new("TextButton", {
@@ -669,7 +697,7 @@ function CelestiaUI:CreateWindow(opts)
                             BackgroundTransparency=1, Text=opt,
                             TextColor3=(opt==sel) and C.AccentBr or C.TextSub,
                             Font=Enum.Font.Gotham, TextSize=12,
-                            AutoButtonColor=false, ZIndex=52,
+                            AutoButtonColor=false, ZIndex=202,
                             TextXAlignment=Enum.TextXAlignment.Left,
                         }, dScroll)
                         corner(ob, 5)
@@ -678,26 +706,30 @@ function CelestiaUI:CreateWindow(opts)
                         ob.MouseLeave:Connect(function() tw(ob,{BackgroundTransparency=1},0.1) end)
                         ob.MouseButton1Click:Connect(function()
                             sel = opt; selLbl.Text = opt
-                            isOpen = false
-                            tw(dList, {Size=UDim2.new(1,0,0,0)}, 0.18)
-                            task.delay(0.2, function() dList.Visible=false end)
-                            chev.Text = "v"
+                            closeDropdown()
                             if o.Callback then o.Callback(opt) end
                         end)
                     end
 
                     local hb = btn({Size=UDim2.new(1,0,1,0), ZIndex=19}, dHead)
                     hb.MouseButton1Click:Connect(function()
-                        isOpen = not isOpen
                         if isOpen then
-                            local h = math.min(#opts2*30+8, 150)
-                            dList.Visible = true
-                            tw(dList, {Size=UDim2.new(1,0,0,h)}, 0.2, Enum.EasingStyle.Back)
-                            chev.Text = "^"
+                            closeDropdown()
                         else
-                            tw(dList, {Size=UDim2.new(1,0,0,0)}, 0.18)
-                            task.delay(0.2, function() dList.Visible=false end)
-                            chev.Text = "v"
+                            isOpen = true
+                            -- Вычисляем абсолютную позицию dHead
+                            local absPos  = dHead.AbsolutePosition
+                            local absSize = dHead.AbsoluteSize
+                            local listW   = absSize.X
+                            listH_px      = math.min(#opts2 * 30 + 8, 150)
+
+                            dList.Size     = UDim2.fromOffset(listW, 0)
+                            dList.Position = UDim2.fromOffset(absPos.X, absPos.Y + absSize.Y + 4)
+                            dList.Visible  = true
+                            blocker.Visible = true
+
+                            tw(dList, {Size=UDim2.fromOffset(listW, listH_px)}, 0.2, Enum.EasingStyle.Back)
+                            chev.Text = "^"
                         end
                     end)
                     return {Get=function() return sel end}
@@ -795,17 +827,31 @@ function CelestiaUI:CreateWindow(opts)
                     lbl({Size=UDim2.new(1,0,0,16), Text=o.Title or "Input",
                          TextColor3=C.Text, Font=Enum.Font.GothamSemibold, TextSize=12, ZIndex=17}, inner)
 
+                    local ibWrap = new("Frame", {
+                        Size=UDim2.new(1,0,0,32), BackgroundColor3=C.Input,
+                        ClipsDescendants=true, ZIndex=17,
+                    }, inner)
+                    corner(ibWrap, 7)
+                    stroke(ibWrap, C.InputBord, 1, 0.2)
+
                     local ib = new("TextBox", {
-                        Size=UDim2.new(1,0,0,30), BackgroundColor3=C.Input,
+                        Size=UDim2.new(1,-20,1,0), Position=UDim2.fromOffset(10,0),
+                        BackgroundTransparency=1,
                         Text=o.Default or "", PlaceholderText=o.Placeholder or "type here...",
                         TextColor3=C.Text, PlaceholderColor3=C.TextDim,
-                        Font=Enum.Font.Gotham, TextSize=12, ClearTextOnFocus=false, ZIndex=17,
-                    }, inner)
-                    corner(ib, 7); stroke(ib, C.InputBord, 1, 0.2)
-                    pad(ib, 0,0,10,10)
-                    ib.Focused:Connect(function() tw(ib,{BackgroundColor3=C.Surface},0.12) end)
+                        Font=Enum.Font.Gotham, TextSize=12,
+                        ClearTextOnFocus=false,
+                        TextXAlignment=Enum.TextXAlignment.Left,
+                        TextYAlignment=Enum.TextYAlignment.Center,
+                        TextWrapped=false,
+                        ZIndex=18,
+                    }, ibWrap)
+                    ibWrap:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+                        -- keep in sync
+                    end)
+                    ib.Focused:Connect(function() tw(ibWrap,{BackgroundColor3=C.Surface},0.12) end)
                     ib.FocusLost:Connect(function()
-                        tw(ib,{BackgroundColor3=C.Input},0.12)
+                        tw(ibWrap,{BackgroundColor3=C.Input},0.12)
                         if o.Callback then o.Callback(ib.Text) end
                     end)
                     return {Get=function() return ib.Text end, Set=function(v) ib.Text=v end}
